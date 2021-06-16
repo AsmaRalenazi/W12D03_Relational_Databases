@@ -1,8 +1,7 @@
 const articlesModel = require('./../../db/models/articles');
 
 const getAllArticles = (req, res) => {
-	const _id=req.params.id
-	const query=`SELECT * FROM articles where id=${_id};`
+	const query=`SELECT * FROM articles`
 	db.query=(query,(err,result)=>{
 		if (err) throw err;
 		console.log("RESULT :",result);
@@ -22,38 +21,24 @@ const getArticlesByAuthor = (req, res) => {
 
 const getAnArticleById = (req, res) => {
 	const _id = req.params.id;
-
-	if (!_id) return res.status(404).json('not found');
-
-	articlesModel
-		.findOne({ _id })
-		.populate('author', 'firstName -_id')
-		.exec()
-		.then((result) => {
-			res.status(200).json(result);
-		})
-		.catch((err) => {
-			res.send(err);
-		});
+const query = `SELECT * FROM articles WHERE id=${_id};`
+db.query=(query,(err,result)=>{
+	if (err) throw err;
+	console.log("RESULT :",result);
+	res.json(result)
+	})
+	
 };
 
 const createNewArticle = (req, res) => {
-	const { title, description, author } = req.body;
-
-	const article = new articlesModel({
-		title,
-		description,
-		author,
-	});
-
-	article
-		.save()
-		.then((result) => {
-			res.status(201).json(result);
+	const {title,description,author}=req.body
+	const query =`INSERT INTO articles (title,description,author) VALUE (?,?,?);`
+	const arr=[title,description,author]
+	db.query=(query,arr,(err,result)=>{
+		if (err) throw err;
+		console.log("RESULT :",result);
+		res.json(result)
 		})
-		.catch((err) => {
-			res.send(err);
-		});
 };
 
 const updateAnArticleById = (req, res) => {
