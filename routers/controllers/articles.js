@@ -42,48 +42,38 @@ const createNewArticle = (req, res) => {
 };
 
 const updateAnArticleById = (req, res) => {
-	const id = req.params.id;
-
-	articlesModel
-		.findByIdAndUpdate(id, req.body, { new: true })
-		.then((result) => {
-			res.status(200).json(result);
-		})
-		.catch((err) => {
-			res.send(err);
-		});
+	const id =req.params.id;
+    const query = `UPDATE article SET id
+    WHERE id =? `;
+    db.query(query,id, (err, result) => {
+        if (err) throw err;
+        console.log('RESULT: ', result);
+        res.json(result)
+      });
 };
 
 const deleteArticleById = (req, res) => {
 	const id = req.params.id;
 
-	articlesModel
-		.findByIdAndDelete(id)
-		.then((result) => {
-			res.status(200).json({
-				success: true,
-				message: `Success Delete atricle with id => ${id}`,
-			});
-		})
-		.catch((err) => {
-			res.send(err);
-		});
+    const query = `DELETE FROM article 
+    WHERE id =? `;
+    db.query(query,id, (err, result) => {
+        if (err) throw err;
+        console.log('RESULT: ', result);
+        res.json(result)
+      });
 };
 
 const deleteArticlesByAuthor = (req, res) => {
 	const author = req.body.author;
 
-	articlesModel
-		.deleteMany({ author })
-		.then((result) => {
-			res.status(200).json({
-				success: true,
-				message: `Success Delete atricle with id => ${author}`,
-			});
-		})
-		.catch((err) => {
-			res.send(err);
-		});
+    const query = `DELETE FROM article 
+    WHERE author =? `;
+    db.query(query,author, (err, result) => {
+        if (err) throw err;
+        console.log('RESULT: ', result);
+        res.json(result)
+      });
 };
 
 module.exports = {
