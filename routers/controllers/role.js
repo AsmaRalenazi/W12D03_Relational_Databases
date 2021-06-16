@@ -9,18 +9,6 @@ const createNewRole = (req, res) => {
 	res.json(result)
 	})
 	 
-	const newRole = new roleModel({
-		role,
-	});
-
-	newRole
-		.save()
-		.then((result) => {
-			res.status(201).json(result);
-		})
-		.catch((err) => {
-			res.send(err);
-		});
 	}
 module.exports = {
 	createNewRole,

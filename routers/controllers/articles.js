@@ -1,15 +1,14 @@
 const articlesModel = require('./../../db/models/articles');
 
 const getAllArticles = (req, res) => {
-	articlesModel
-		.find({})
-		.then((result) => {
-			res.status(200).json(result);
+	const _id=req.params.id
+	const query=`SELECT * FROM article where id=${_id};`
+	db.query=(query,(err,result)=>{
+		if (err) throw err;
+		console.log("RESULT :",result);
+		res.json(result)
 		})
-		.catch((err) => {
-			res.send(err);
-		});
-};
+}
 
 const getArticlesByAuthor = (req, res) => {
 	const author = req.query.author;
