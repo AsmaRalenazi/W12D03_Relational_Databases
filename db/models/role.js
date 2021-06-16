@@ -1,8 +1,16 @@
-const mongoose = require('mongoose');
+ const mysql=require("mysql2")
+const db=require("../db")
+ const createNewRole=(req,res)=>{
+const {role}=req.body
+const query=`INSERT INTO roles (role) VALUES (?);`
+db.query=(query.role,(err,result)=>{
+if (err) throw err;
+console.log("RESULT :",result);
+res.json(result)
+})
+ }
 
-const roles = new mongoose.Schema({
-	role: { type: String, required: true },
-	permissions: { type: Array, required: true },
-});
+ module.exports={
+ createNewRole
 
-module.exports = mongoose.model('Roles', roles);
+ }
